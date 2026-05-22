@@ -11,8 +11,8 @@ public class RegisterDto {
     @Email(message = "Email should be valid")
     private String email;
 
-    @NotBlank(message = "Username is required")
-    private String username;
+    @NotBlank(message = "Full name is required")
+    private String fullName;
 
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")

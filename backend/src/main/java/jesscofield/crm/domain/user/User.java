@@ -30,6 +30,8 @@ public class User {
 
     private String phone;
 
+    private String address;
+
     @Column(name = "created_at")
     private Date createdAt = new Date();
 
