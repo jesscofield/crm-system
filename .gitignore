@@ -1,0 +1,13 @@
+node_modules/
+target/
+.idea/
+.vscode/
+
+*.iml
+.DS_Store
+
+*.class
+build/
+dist/
+
+application.properties
