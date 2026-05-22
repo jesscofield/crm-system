@@ -26,9 +26,10 @@ const Layout = ({ children }) => {
     return (
         <div className="min-h-screen bg-gray-100 flex">
             {/* Sidebar */}
-            <div className="w-64 bg-white shadow-md fixed h-full overflow-y-auto">
-                <div className="p-4 border-b">
-                    <h1 className="text-xl font-bold text-blue-600">CRM System</h1>
+            <div className="w-64 bg-white shadow-xl fixed h-full overflow-y-auto">
+                <div className="p-6 border-b bg-gradient-to-r from-blue-600 to-indigo-600">
+                    <h1 className="text-xl font-bold text-white tracking-tight">CRM System</h1>
+                    <p className="text-blue-100 text-sm mt-1">Manage your business</p>
                 </div>
                 
                 <nav className="p-4">
@@ -36,33 +37,41 @@ const Layout = ({ children }) => {
                         <Link
                             key={item.path}
                             to={item.path}
-                            className={`flex items-center px-4 py-3 mb-2 rounded-xl transition-all duration-200 ${
+                            className={`block px-4 py-3 mb-3 rounded-xl transition-all duration-200 ${
                                 location.pathname === item.path
-                                    ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg'
-                                    : 'text-gray-700 hover:bg-gray-100'
+                                    ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-md'
+                                    : 'text-gray-700 hover:bg-gray-100 hover:translate-x-1'
                             }`}
                         >
-                            <span className="font-medium">{item.name}</span>
+                            <span className="font-medium block">{item.name}</span>
                         </Link>
                     ))}
                     
                     <hr className="my-4 border-gray-200" />
                     
-                    <div className="px-4 py-3 text-sm text-gray-500">
-                        <p>Logged in as:</p>
-                        <p className="font-medium text-gray-700">{user?.email}</p>
+                    <div className="px-4 py-3 bg-gray-50 rounded-xl mx-2 mb-4">
+                        <p className="text-xs text-gray-500 uppercase tracking-wider">Logged in as</p>
+                        <p className="font-semibold text-gray-800 text-sm mt-1 truncate">{user?.email}</p>
                         {userType && (
-                            <p className="text-xs mt-1">
-                                {userType === 'company' ? `Company: ${companyName || 'Company'}` : 'Freelance'}
+                            <p className="text-xs mt-2">
+                                {userType === 'company' ? (
+                                    <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs">
+                                        Company: {companyName || 'Company'}
+                                    </span>
+                                ) : (
+                                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
+                                        Freelance
+                                    </span>
+                                )}
                             </p>
                         )}
                     </div>
                     
                     <button
                         onClick={handleLogout}
-                        className="w-full flex items-center px-4 py-3 mt-4 text-red-600 hover:bg-red-50 rounded-lg transition"
+                        className="w-full flex items-center justify-center px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200 font-medium"
                     >
-                        <span>Logout</span>
+                        Logout
                     </button>
                 </nav>
             </div>

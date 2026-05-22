@@ -56,7 +56,9 @@ function AppRoutes() {
             } />
             <Route path="/kanban" element={
                 <PrivateRoute>
+                  <Layout>
                     <Kanban />
+                  </Layout>
                 </PrivateRoute>
             } />
             
