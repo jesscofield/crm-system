@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
     const { user, logout } = useAuth();
@@ -17,7 +18,7 @@ const Dashboard = () => {
                 <div className="container mx-auto flex justify-between items-center">
                     <h1 className="text-xl font-bold">CRM System</h1>
                     <div className="flex items-center gap-4">
-                        <span className="text-gray-600">Welcome, {user?.username}!</span>
+                        <span className="text-gray-600">Welcome, {user?.username || user?.fullName || 'User'}!</span>
                         <button
                             onClick={handleLogout}
                             className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
@@ -47,6 +48,16 @@ const Dashboard = () => {
                             <h3 className="font-bold text-purple-800">Companies</h3>
                             <p className="text-2xl font-bold">0</p>
                         </div>
+                    </div>
+
+                    {/* Кнопка для переходу до Customers */}
+                    <div className="mt-6 flex justify-center">
+                        <Link
+                            to="/customers"
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200"
+                        >
+                            Manage Customers
+                        </Link>
                     </div>
                 </div>
             </div>
