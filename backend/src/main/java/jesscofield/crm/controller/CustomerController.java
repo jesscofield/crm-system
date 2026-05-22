@@ -17,13 +17,11 @@ public class CustomerController {
     @Autowired
     private CustomerRepository customerRepository;
 
-    // Get all customers
     @GetMapping
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
 
-    // Get customer by ID
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
         return customerRepository.findById(id)
@@ -31,7 +29,6 @@ public class CustomerController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Create new customer
     @PostMapping
     public ResponseEntity<Customer> createCustomer(@RequestBody CustomerDto customerDto) {
         Customer customer = new Customer();
@@ -39,26 +36,26 @@ public class CustomerController {
         customer.setEmail(customerDto.getEmail());
         customer.setPhone(customerDto.getPhone());
         customer.setAddress(customerDto.getAddress());
+        customer.setStage("lead");
 
         Customer savedCustomer = customerRepository.save(customer);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCustomer);
     }
 
-    // Update customer
     @PutMapping("/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody CustomerDto customerDto) {
+    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer customerDetails) {
         return customerRepository.findById(id)
                 .map(existingCustomer -> {
-                    existingCustomer.setFullName(customerDto.getFullName());
-                    existingCustomer.setEmail(customerDto.getEmail());
-                    existingCustomer.setPhone(customerDto.getPhone());
-                    existingCustomer.setAddress(customerDto.getAddress());
+                    existingCustomer.setFullName(customerDetails.getFullName());
+                    existingCustomer.setEmail(customerDetails.getEmail());
+                    existingCustomer.setPhone(customerDetails.getPhone());
+                    existingCustomer.setAddress(customerDetails.getAddress());
+                    existingCustomer.setStage(customerDetails.getStage());
                     return ResponseEntity.ok(customerRepository.save(existingCustomer));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Delete customer
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
         return customerRepository.findById(id)

@@ -21,6 +21,9 @@ public class Customer {
     @Column(nullable = false)
     private String fullName;
 
+    @Column(name = "stage")
+    private String stage = "lead";
+
     private String email;
 
     private String phone;

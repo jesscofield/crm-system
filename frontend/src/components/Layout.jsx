@@ -15,12 +15,12 @@ const Layout = ({ children }) => {
         navigate('/login');
     };
 
-    // Navigation items
     const navItems = [
-        { name: 'Dashboard', path: '/dashboard', icon: '📊' },
-        { name: 'Customers', path: '/customers', icon: '👥' },
-        { name: 'Appointments', path: '/appointments', icon: '📅' },
-        { name: 'Companies', path: '/companies', icon: '🏢' },
+        { name: 'Dashboard', path: '/dashboard' },
+        { name: 'Customers', path: '/customers' },
+        { name: 'Appointments', path: '/appointments' },
+        { name: 'Companies', path: '/companies' },
+        { name: 'Sales Pipeline', path: '/kanban' }
     ];
 
     return (
@@ -36,14 +36,13 @@ const Layout = ({ children }) => {
                         <Link
                             key={item.path}
                             to={item.path}
-                            className={`flex items-center gap-3 px-4 py-3 mb-2 rounded-lg transition ${
+                            className={`flex items-center px-4 py-3 mb-2 rounded-xl transition-all duration-200 ${
                                 location.pathname === item.path
-                                    ? 'bg-blue-500 text-white'
+                                    ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg'
                                     : 'text-gray-700 hover:bg-gray-100'
                             }`}
                         >
-                            <span>{item.icon}</span>
-                            <span>{item.name}</span>
+                            <span className="font-medium">{item.name}</span>
                         </Link>
                     ))}
                     
@@ -54,22 +53,21 @@ const Layout = ({ children }) => {
                         <p className="font-medium text-gray-700">{user?.email}</p>
                         {userType && (
                             <p className="text-xs mt-1">
-                                {userType === 'company' ? `🏢 ${companyName || 'Company'}` : '👤 Freelance'}
+                                {userType === 'company' ? `Company: ${companyName || 'Company'}` : 'Freelance'}
                             </p>
                         )}
                     </div>
                     
                     <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-3 mt-4 text-red-600 hover:bg-red-50 rounded-lg transition"
+                        className="w-full flex items-center px-4 py-3 mt-4 text-red-600 hover:bg-red-50 rounded-lg transition"
                     >
-                        <span>🚪</span>
                         <span>Logout</span>
                     </button>
                 </nav>
             </div>
 
-            {/* Main Content - with margin to account for fixed sidebar */}
+            {/* Main Content */}
             <div className="ml-64 flex-1">
                 <div className="p-8">
                     {children}

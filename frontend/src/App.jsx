@@ -10,6 +10,7 @@ import Appointments from './pages/Appointments';
 import Companies from './pages/Companies';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Kanban from './pages/Kanban';
 
 const PrivateRoute = ({ children }) => {
     const { token } = useAuth();
@@ -51,6 +52,11 @@ function AppRoutes() {
                     <Layout>
                         <Companies />
                     </Layout>
+                </PrivateRoute>
+            } />
+            <Route path="/kanban" element={
+                <PrivateRoute>
+                    <Kanban />
                 </PrivateRoute>
             } />
             

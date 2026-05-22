@@ -33,61 +33,35 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <nav className="bg-white shadow-md p-4">
-                <div className="container mx-auto flex justify-between items-center">
-                    <h1 className="text-xl font-bold">CRM System</h1>
-                    <div className="flex items-center gap-4">
-                        <span className="text-gray-600">Welcome, {user?.username || user?.fullName || 'User'}!</span>
-                        <button
-                            onClick={handleLogout}
-                            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
-                        >
-                            Logout
-                        </button>
+        <div>
+            <div className="mb-6">
+                <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
+                <p className="text-gray-500 text-sm mt-1">Welcome back, {user?.username || user?.fullName || 'User'}</p>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-xl shadow-md">
+                        <h3 className="font-semibold text-white text-lg">Customers</h3>
+                        <p className="text-4xl font-bold text-white mt-2">{loading ? '...' : customerCount}</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-xl shadow-md">
+                        <h3 className="font-semibold text-white text-lg">Appointments</h3>
+                        <p className="text-4xl font-bold text-white mt-2">0</p>
+                    </div>
+                    <div className="bg-gradient-to-br from-purple-500 to-purple-600 p-6 rounded-xl shadow-md">
+                        <h3 className="font-semibold text-white text-lg">Companies</h3>
+                        <p className="text-4xl font-bold text-white mt-2">0</p>
                     </div>
                 </div>
-            </nav>
 
-            <div className="container mx-auto p-8">
-                <div className="bg-white rounded-lg shadow-md p-6">
-                    <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
-                    <p className="text-gray-600">Welcome to your CRM system!</p>
-                    <p className="text-gray-600 mt-2">Your email: {user?.email}</p>
-                    
-                    {/* Display user type */}
-                    {userType && (
-                        <p className="text-gray-600 mt-1">
-                            Account type: {userType === 'company' ? `Company (${companyName || 'N/A'})` : 'Freelance'}
-                        </p>
-                    )}
-                    
-                    <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="bg-blue-100 p-4 rounded-lg">
-                            <h3 className="font-bold text-blue-800">Customers</h3>
-                            <p className="text-2xl font-bold">
-                                {loading ? '...' : customerCount}
-                            </p>
-                        </div>
-                        <div className="bg-green-100 p-4 rounded-lg">
-                            <h3 className="font-bold text-green-800">Appointments</h3>
-                            <p className="text-2xl font-bold">0</p>
-                        </div>
-                        <div className="bg-purple-100 p-4 rounded-lg">
-                            <h3 className="font-bold text-purple-800">Companies</h3>
-                            <p className="text-2xl font-bold">0</p>
-                        </div>
-                    </div>
-
-                    {/* Button to Customers page */}
-                    <div className="mt-6 flex justify-center">
-                        <Link
-                            to="/customers"
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200"
-                        >
-                            Manage Customers
-                        </Link>
-                    </div>
+                <div className="mt-6">
+                    <Link
+                        to="/customers"
+                        className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200"
+                    >
+                        Manage Customers
+                    </Link>
                 </div>
             </div>
         </div>
