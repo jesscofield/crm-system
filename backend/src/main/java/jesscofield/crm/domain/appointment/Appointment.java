@@ -4,9 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import jesscofield.crm.domain.user.User;
 import jesscofield.crm.domain.customer.Customer;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointments")
@@ -20,15 +19,16 @@ public class Appointment {
     private Long id;
 
     @Column(nullable = false)
-    private Date date;
+    private String title;
+
+    @Column(nullable = false)
+    private LocalDateTime dateTime;
 
     private String description;
+
+    private String location;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 }

@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { customerService } from '../services/customerService';
 
 const Dashboard = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const [customerCount, setCustomerCount] = useState(0);
+    const [loading, setLoading] = useState(true);
+
+    const userType = localStorage.getItem('userType');
+    const companyName = localStorage.getItem('companyName');
+
+    useEffect(() => {
+        const loadCustomerCount = async () => {
+            try {
+                const customers = await customerService.getAll();
+                setCustomerCount(customers.length);
+            } catch (error) {
+                console.error('Failed to load customer count:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadCustomerCount();
+    }, []);
 
     const handleLogout = () => {
         logout();
@@ -35,10 +55,19 @@ const Dashboard = () => {
                     <p className="text-gray-600">Welcome to your CRM system!</p>
                     <p className="text-gray-600 mt-2">Your email: {user?.email}</p>
                     
+                    {/* Display user type */}
+                    {userType && (
+                        <p className="text-gray-600 mt-1">
+                            Account type: {userType === 'company' ? `Company (${companyName || 'N/A'})` : 'Freelance'}
+                        </p>
+                    )}
+                    
                     <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="bg-blue-100 p-4 rounded-lg">
                             <h3 className="font-bold text-blue-800">Customers</h3>
-                            <p className="text-2xl font-bold">0</p>
+                            <p className="text-2xl font-bold">
+                                {loading ? '...' : customerCount}
+                            </p>
                         </div>
                         <div className="bg-green-100 p-4 rounded-lg">
                             <h3 className="font-bold text-green-800">Appointments</h3>
@@ -50,7 +79,7 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    {/* Кнопка для переходу до Customers */}
+                    {/* Button to Customers page */}
                     <div className="mt-6 flex justify-center">
                         <Link
                             to="/customers"

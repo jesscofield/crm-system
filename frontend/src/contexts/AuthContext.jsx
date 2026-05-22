@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(true);
         try {
             const response = await axios.post(`${API_URL}/login`, { email, password });
-            const { token, email: userEmail, fullName: username } = response.data;
+            const { token, email: userEmail, username } = response.data;
             
             localStorage.setItem('token', token);
             setToken(token);
@@ -36,7 +36,25 @@ export const AuthProvider = ({ children }) => {
     const register = async (userData) => {
         setLoading(true);
         try {
-            await axios.post(`${API_URL}/register`, userData);
+            // Send only the fields your backend expects
+            const payload = {
+                email: userData.email,
+                fullName: userData.fullName,
+                password: userData.password,
+                phone: userData.phone,
+                address: userData.address
+            };
+            
+            // Store userType in localStorage for future use
+            if (userData.userType) {
+                localStorage.setItem('userType', userData.userType);
+                if (userData.userType === 'company') {
+                    localStorage.setItem('companyName', userData.companyName || '');
+                    localStorage.setItem('employeeCount', userData.employeeCount || '');
+                }
+            }
+            
+            await axios.post(`${API_URL}/register`, payload);
             toast.success('Registration successful! Please login.');
             return true;
         } catch (error) {
@@ -49,6 +67,9 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('userType');
+        localStorage.removeItem('companyName');
+        localStorage.removeItem('employeeCount');
         setToken(null);
         setUser(null);
         toast.info('Logged out');

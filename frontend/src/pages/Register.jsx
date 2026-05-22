@@ -6,18 +6,22 @@ import { Link, useNavigate } from 'react-router-dom';
 const Register = () => {
     const { register: registerUser, loading } = useAuth();
     const navigate = useNavigate();
-    const [userType, setUserType] = useState('freelance'); // 'freelance' or 'company'
+    const [userType, setUserType] = useState('freelance');
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = async (data) => {
-        // Prepare data for backend
         const userData = {
             email: data.email,
             fullName: data.fullName,
             password: data.password,
             phone: data.phone,
-            address: data.address
+            address: data.address,
+            userType: userType,
+            ...(userType === 'company' && {
+                companyName: data.companyName,
+                employeeCount: data.employeeCount
+            })
         };
         
         const success = await registerUser(userData);
@@ -28,7 +32,7 @@ const Register = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded-lg shadow-md w-96">
+            <div className="bg-white p-8 rounded-lg shadow-md w-96 max-w-full">
                 <h1 className="text-2xl font-bold mb-6 text-center">Create Account</h1>
                 
                 {/* User Type Selection */}
@@ -58,6 +62,7 @@ const Register = () => {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
+                    {/* Common fields for both types */}
                     <div className="mb-4">
                         <label className="block text-gray-700 mb-2">Full Name</label>
                         <input
@@ -114,7 +119,7 @@ const Register = () => {
                         {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
                     </div>
 
-                    <div className="mb-6">
+                    <div className="mb-4">
                         <label className="block text-gray-700 mb-2">Address</label>
                         <input
                             type="text"
@@ -125,13 +130,35 @@ const Register = () => {
                         {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
                     </div>
 
+                    {/* Company-specific fields */}
                     {userType === 'company' && (
-                        <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-                            <p className="text-sm text-blue-800">
-                                ℹ️ Company registration will include additional fields in the next version.
-                                For now, you can register as a company using these basic fields.
-                            </p>
-                        </div>
+                        <>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 mb-2">Company Name</label>
+                                <input
+                                    type="text"
+                                    {...register('companyName', { required: 'Company name is required' })}
+                                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Your Company Ltd"
+                                />
+                                {errors.companyName && <p className="text-red-500 text-sm mt-1">{errors.companyName.message}</p>}
+                            </div>
+
+                            <div className="mb-6">
+                                <label className="block text-gray-700 mb-2">Number of Employees</label>
+                                <select
+                                    {...register('employeeCount', { required: 'Please select employee count' })}
+                                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value="">Select...</option>
+                                    <option value="1-10">1-10 employees</option>
+                                    <option value="11-50">11-50 employees</option>
+                                    <option value="51-200">51-200 employees</option>
+                                    <option value="200+">200+ employees</option>
+                                </select>
+                                {errors.employeeCount && <p className="text-red-500 text-sm mt-1">{errors.employeeCount.message}</p>}
+                            </div>
+                        </>
                     )}
 
                     <button
